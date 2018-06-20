@@ -93,9 +93,9 @@ public class MainBeaconListActivity extends Activity {
             case R.id.action_settings:
                 displayUserGuideDialog();
                 return true;
-            case R.id.action_txPower_settings:
-                displayTxPowerDialog();
-                return true;
+//            case R.id.action_txPower_settings:
+//                displayTxPowerDialog();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
