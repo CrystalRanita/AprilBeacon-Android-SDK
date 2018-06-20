@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item  
+        android:id="@+id/action_distance"
+        android:icon="@drawable/ruler"
+        android:title="@string/action_set_dist"/>  
+    <item  
+        android:id="@+id/action_name"  
+        android:icon="@drawable/user_baby"
+        android:title="@string/action_set_username"/>
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/trash"
+        android:title="@string/action_clean_all_records"/>  
+    <item  
+        android:id="@+id/action_settings"  
+        android:icon="@drawable/book"
+        android:title="@string/action_user_guide"/>
+    <item
+        android:id="@+id/action_txPower_settings"
+        android:icon="@drawable/power"
+        android:title="@string/action_set_tx_power"/>
+</menu>

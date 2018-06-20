@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">寶寶追蹤</string>
+    <string name="start_scan">開始掃描</string>
+    <string name="stop_scan">停止掃描</string>
+    <string name="scanning">掃描中......</string>
+    <string name="bt_not_enabled">尚未開啟藍芽</string>
+    <string name="location_not_enabled">尚未開啟位置設定</string>
+    <string name="device_found_num">已找到的裝置數量</string>
+    <string name="device_away">注意！寶寶已遠離！</string>
+    <string name="device_coming">寶寶進入範圍內!</string>
+    <string name="device_not_found">寶寶完全失去蹤影!</string>
+    <string name="start_background_notify">開啟通知</string>
+    <string name="notify">警報通知</string>
+    <string name="selected">已選擇的裝置</string>
+    <string name="unselected">尚未選擇的裝置</string>
+    <string name="action_set_dist">設定距離限制</string>
+    <string name="action_set_username">修改使用者名稱</string>
+    <string name="action_clean_all_records">清除追蹤資料</string>
+    <string name="action_user_guide">說明</string>
+    <string name="action_set_tx_power">設定發射功率參數</string>
+    <string name="current">目前</string>
+    <string name="dist_unit">公尺</string>
+    <string name="tx_power_unit">dBm</string>
+    <string name="dist_item1">2公尺</string>
+    <string name="dist_item2">3公尺</string>
+    <string name="dist_item3">4公尺</string>
+    <string name="dist_item4">5公尺</string>
+    <string name="dist_item5">6公尺</string>
+    <string name="power_item1">-51 dBm</string>
+    <string name="power_item2">-52 dBm</string>
+    <string name="power_item3">-53 dBm</string>
+    <string name="power_item4">-54 dBm</string>
+    <string name="power_item5">-55 dBm</string>
+    <string name="select_dist">請選擇通知距離</string>
+    <string name="select_power">請選擇發射功率</string>
+    <string name="cancel">取消</string>
+    <string name="ok">確定</string>
+    <string name="data_clean">資料已清除！</string>
+    <string name="input_user_name_hint">請輸入使用者名稱</string>
+    <string name="input_user_name_title">修改名稱</string>
+    <string name="user_guide">此應用程式能偵測Beacon距離。</string>
+    <string name="notification_dismiss">關閉</string>
+    <string name="dist">距離</string>
+    <string name="give_me_a_name">幫我命名~拜託</string>
+</resources>

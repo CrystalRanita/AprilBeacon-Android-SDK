@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BabyHunter</string>
+    <string name="start_scan">Start Scan</string>
+    <string name="stop_scan">Stop Scan</string>
+    <string name="scanning">Scanning...</string>
+    <string name="bt_not_enabled">Bluetooth not enabled.</string>
+    <string name="location_not_enabled">Location setting not enabled.</string>
+    <string name="device_found_num">Found Devices</string>
+    <string name="device_away">Warning baby away from you!</string>
+    <string name="device_coming">Baby coming!</string>
+    <string name="device_not_found">Baby lost!</string>
+    <string name="start_background_notify">Enable Notification</string>
+    <string name="notify">Notification</string>
+    <string name="selected">Selected</string>
+    <string name="unselected">Unselected</string>
+    <string name="action_set_dist">Set Distance Limit</string>
+    <string name="action_set_username">Modify User Name</string>
+    <string name="action_clean_all_records">Clear Track Record</string>
+    <string name="action_user_guide">User Guide</string>
+    <string name="action_set_tx_power">Set Transmits Power</string>
+    <string name="current">Current</string>
+    <string name="dist_unit">m</string>
+    <string name="tx_power_unit">dBm</string>
+    <string name="dist_item1">2 m</string>
+    <string name="dist_item2">3m</string>
+    <string name="dist_item3">4m</string>
+    <string name="dist_item4">5m</string>
+    <string name="dist_item5">6m</string>
+    <string name="power_item1">-51 dBm</string>
+    <string name="power_item2">-52 dBm</string>
+    <string name="power_item3">-53 dBm</string>
+    <string name="power_item4">-54 dBm</string>
+    <string name="power_item5">-55 dBm</string>
+    <string name="select_dist">Please Select Notify Distance</string>
+    <string name="select_power">Please Select Transmits Power</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="data_clean">Data cleaned!</string>
+    <string name="input_user_name_hint">Please input username.</string>
+    <string name="input_user_name_title">Modify Name</string>
+    <string name="user_guide">This app can detect beacon distance.</string>
+    <string name="notification_dismiss">Dismiss</string>
+    <string name="dist">Distance</string>
+    <string name="give_me_a_name">Please Give Me a Name</string>
+</resources>

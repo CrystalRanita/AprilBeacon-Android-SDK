@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ranita.BabyHunter"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <!-- BLE -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- VIBRATE -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!-- BLE -->
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Holo.Light">
+        <activity
+            android:name="com.ranita.BabyHunter.MainBeaconListActivity"
+            android:launchMode="singleInstance"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.ranita.BabyHunter.ResultActivity"></activity>
+
+        <receiver android:name="com.ranita.BabyHunter.EventReceiver" >
+            <intent-filter>
+                <action android:name="com.ranita.BabyHunter.action_dismiss_notification"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Scan beacon service -->
+        <service
+            android:name="com.aprilbrother.aprilbrothersdk.service.BeaconService"
+            android:exported="false" />
+        <service
+            android:name="com.ranita.BabyHunter.NotifyService"
+            android:exported="false"></service>
+    </application>
+
+</manifest>
