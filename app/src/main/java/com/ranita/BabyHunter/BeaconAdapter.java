@@ -54,11 +54,15 @@ public class BeaconAdapter extends BaseAdapter {
 	}
 
 	private void bind(Beacon beacon, View view) {
+		String name = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_NAME, mContex);
+		String mac = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, mContex);
+		String current_mac = beacon.getMacAddress();
+		int minor = beacon.getMinor();
 		ViewHolder holder = (ViewHolder) view.getTag();
 		holder.distanceTextView.setText(mContex.getResources().getString(R.string.dist) + ": "
 				+ beacon.getDistance() + mContex.getResources().getString(R.string.dist_unit));
-		String name = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_NAME, mContex);
-		holder.usernameTextView.setText(name.equals("")? mContex.getResources().getString(R.string.give_me_a_name): name);
+		holder.usernameTextView.setText((!name.equals("") && (mac.equals(current_mac)))? name : mContex.getResources().getString(R.string.give_me_a_name));
+		holder.idTextView.setText(mContex.getResources().getString(R.string.beacon_id) + ": " + minor);
 		boolean isSelected = BeaconUtils.getBooleanSharedPref(BeaconUtils.SELECTED_BEACON_NOTIFICATION_ENABLED, mContex) &&
 				(BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, mContex).equals(beacon.getMacAddress())
 				);
@@ -79,11 +83,13 @@ public class BeaconAdapter extends BaseAdapter {
 
 	static class ViewHolder {
 		final TextView usernameTextView;
+		final TextView idTextView;
 		final TextView distanceTextView;
 		final ImageView scanUserImageView;
 
 		ViewHolder(View view) {
 			usernameTextView = (TextView) view.findViewById(R.id.scan_username);
+			idTextView = (TextView) view.findViewById(R.id.scan_id);
 			distanceTextView = (TextView) view.findViewById(R.id.scan_distance);
 			scanUserImageView = (ImageView) view.findViewById(R.id.scan_user_icon);
 		}

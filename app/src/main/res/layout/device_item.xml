@@ -7,20 +7,27 @@
         android:id="@+id/scan_user_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/list_margin"
         android:src="@drawable/user_baby_grey" />
     <LinearLayout
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
         android:orientation="vertical" >
         <TextView
             android:id="@+id/scan_username"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/list_fontsize"/>
+        <TextView
+            android:id="@+id/scan_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/list_fontsize"/>
         <TextView
             android:id="@+id/scan_distance"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/list_fontsize"/>
     </LinearLayout>
 </LinearLayout>
