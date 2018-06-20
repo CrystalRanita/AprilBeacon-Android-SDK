@@ -45,7 +45,8 @@ public class MainBeaconListActivity extends Activity {
     private BeaconAdapter adapter;
     private BeaconManager beaconManager;
     private ArrayList<Beacon> myBeacons;
-    private static int mTargetDistance = 6;
+    private static int mTargetDistance = 8;
+    private static int mTargetDistanceID = 0;
     private static int mPower = -51;
     private static int mPowerID = 0;
 
@@ -114,32 +115,28 @@ public class MainBeaconListActivity extends Activity {
                 getResources().getString(R.string.dist_item1),
                 getResources().getString(R.string.dist_item2),
                 getResources().getString(R.string.dist_item3),
-                getResources().getString(R.string.dist_item4),
-                getResources().getString(R.string.dist_item5)
         };
 
-        int checkedItemID = target_dist - 2;
+        int checkedItemID = BeaconUtils.getIntSharedPref(BeaconUtils.TARGET_NOTIFY_DISTANCE_ID, getApplicationContext());
         builder.setSingleChoiceItems(dist_items, checkedItemID, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        mTargetDistance = 2;
+                        mTargetDistance = 8;
+                        mTargetDistanceID = 0;
                         break;
                     case 1:
-                        mTargetDistance = 3;
+                        mTargetDistance = 12;
+                        mTargetDistanceID = 1;
                         break;
                     case 2:
-                        mTargetDistance = 4;
-                        break;
-                    case 3:
-                        mTargetDistance = 5;
-                        break;
-                    case 4:
-                        mTargetDistance = 6;
+                        mTargetDistance = 16;
+                        mTargetDistanceID = 2;
                         break;
                     default:
-                        mTargetDistance = 6;
+                        mTargetDistance = 8;
+                        mTargetDistanceID = 0;
                 }
             }
         });
@@ -147,6 +144,7 @@ public class MainBeaconListActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 BeaconUtils.setIntSharedPref(BeaconUtils.TARGET_NOTIFY_DISTANCE, mTargetDistance, getApplicationContext());
+                BeaconUtils.setIntSharedPref(BeaconUtils.TARGET_NOTIFY_DISTANCE_ID, mTargetDistanceID, getApplicationContext());
             }
         });
         builder.setNegativeButton(getResources().getString(R.string.cancel), null);
@@ -161,7 +159,7 @@ public class MainBeaconListActivity extends Activity {
                 " (" + getResources().getString(R.string.current) +
                 ": " + target_power + getResources().getString(R.string.tx_power_unit) +
                 ")";
-        int target_power_id = BeaconUtils.getIntPowerIDSharedPref(BeaconUtils.TARGET_TX_POWER_ID, getApplicationContext());
+        int target_power_id = BeaconUtils.getIntSharedPref(BeaconUtils.TARGET_TX_POWER_ID, getApplicationContext());
         AlertDialog.Builder builder = new AlertDialog.Builder(MainBeaconListActivity.this);
         builder.setTitle(title);
 

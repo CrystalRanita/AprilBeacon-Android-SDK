@@ -22,11 +22,9 @@
     <string name="current">Current</string>
     <string name="dist_unit">m</string>
     <string name="tx_power_unit">dBm</string>
-    <string name="dist_item1">2 m</string>
-    <string name="dist_item2">3m</string>
-    <string name="dist_item3">4m</string>
-    <string name="dist_item4">5m</string>
-    <string name="dist_item5">6m</string>
+    <string name="dist_item1">8m</string>
+    <string name="dist_item2">12m</string>
+    <string name="dist_item3">16mm</string>
     <string name="power_item1">-51 dBm</string>
     <string name="power_item2">-52 dBm</string>
     <string name="power_item3">-53 dBm</string>

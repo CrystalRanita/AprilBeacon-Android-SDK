@@ -19,6 +19,7 @@ public class BeaconUtils {
     public static final String SELECTED_BEACON_NOTIFICATION_ENABLED = "SELECTED_BEACON_NOTIFICATION_ENABLED";
     public static final String SELECTED_DISTANCE_DETECT_ENABLED = "SELECTED_DISTANCE_DETECT_ENABLED";
     public static final String TARGET_NOTIFY_DISTANCE = "TARGET_NOTIFY_DISTANCE";
+    public static final String TARGET_NOTIFY_DISTANCE_ID = "TARGET_NOTIFY_DISTANCE_ID";
     public static final String TARGET_TX_POWER = "TARGET_TX_POWER";
     public static final String TARGET_TX_POWER_ID = "TARGET_TX_POWER_ID";
 
@@ -37,14 +38,14 @@ public class BeaconUtils {
         return mSharedPref.getInt(key, -51);
     }
 
-    public static int getIntPowerIDSharedPref(String key, Context ctx){
+    public static int getIntSharedPref(String key, Context ctx){
         SharedPreferences mSharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
-        return mSharedPref.getInt(key, -51);
+        return mSharedPref.getInt(key, 0);
     }
 
     public static int getIntDistSharedPref(String key, Context ctx){
         SharedPreferences mSharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
-        return mSharedPref.getInt(key, 6);
+        return mSharedPref.getInt(key, 8);
     }
 
     public static void setSharedPref(String key, String value, Context ctx){
