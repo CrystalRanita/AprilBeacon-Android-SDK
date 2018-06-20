@@ -4,10 +4,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="list_margin">10dp</dimen>
+    <dimen name="userguide_margin">25dp</dimen>
 
     <!-- FontSize -->
     <dimen name="scanning_fontsize">36dp</dimen>
     <dimen name="scanning_listview_fontsize">16dp</dimen>
-    <dimen name="user_guide_fontsize">12dp</dimen>
+    <dimen name="user_guide_fontsize">18dp</dimen>
     <dimen name="list_fontsize">28dp</dimen>
 </resources>

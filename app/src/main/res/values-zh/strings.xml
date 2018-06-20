@@ -37,9 +37,14 @@
     <string name="data_clean">資料已清除！</string>
     <string name="input_user_name_hint">請輸入使用者名稱</string>
     <string name="input_user_name_title">修改名稱</string>
-    <string name="user_guide">此應用程式能偵測Beacon距離。</string>
+    <string name="user_guide1">請於應用程式選擇您要追蹤的Beacon。</string>
+    <string name="user_guide2">當寶貝遠離您時會發出提醒。</string>
+    <string name="user_guide3">參考資料：AprilBeacon-Android-SDK</string>
+    <string name="user_guide4">圖片修改自 www.flaticon.com 的 Freepik</string>
+    <string name="user_guide5">製作團隊：苙婷、美辰、昭華</string>
     <string name="notification_dismiss">關閉</string>
     <string name="dist">距離</string>
     <string name="give_me_a_name">路人甲</string>
     <string name="beacon_id">編號</string>
+    <string name="guide">說明</string>
 </resources>

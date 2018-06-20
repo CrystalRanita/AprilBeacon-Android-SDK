@@ -6,7 +6,8 @@
         android:id="@+id/user_guide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/user_guide"
         android:textSize="@dimen/user_guide_fontsize"
+        android:paddingTop="@dimen/userguide_margin"
+        android:paddingLeft="@dimen/userguide_margin"
         android:visibility="visible" />
 </LinearLayout>
