@@ -15,6 +15,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.BaseExpandableListAdapter;
 
 import com.aprilbrother.aprilbrothersdk.Beacon;
 import com.aprilbrother.aprilbrothersdk.BeaconManager;
@@ -96,8 +97,10 @@ public class NotifyService extends Service {
 //				Log.i(TAG, "onExitedRegion selected_uuid_major_minor: " + selected_uuid_major_minor + ", current_uuid_major_minor: " + current_uuid_major_minor);
 //				if (selected_uuid_major_minor.equals(current_uuid_major_minor)) {
 //					Log.i(TAG, "onExitedRegion checked");
+				if(!BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, getApplicationContext()).equals("")) {
 					showNotification(getApplicationContext(),
 							getResources().getString(R.string.device_not_found));
+				}
 //				}
 			}
 
