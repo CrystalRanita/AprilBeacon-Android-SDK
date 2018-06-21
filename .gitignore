@@ -6,4 +6,4 @@
 /build
 /captures
 .externalNativeBuild
-./tools/BabyHunterSign
+tools/BabyHunterSign
