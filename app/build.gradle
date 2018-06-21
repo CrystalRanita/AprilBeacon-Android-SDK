@@ -6,7 +6,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.aprbrother.aprilbeacondemos"
+        applicationId 'com.ranita.BabyHunter'
         minSdkVersion 21
         targetSdkVersion 22
         versionCode 100001
@@ -24,6 +24,8 @@ android {
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
         abortOnError false
+    }
+    productFlavors {
     }
 }
 
