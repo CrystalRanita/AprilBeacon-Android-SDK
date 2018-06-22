@@ -27,8 +27,8 @@ import java.util.List;
 public class NotifyService extends Service {
 	private static final String TAG = "NotifyService";
 	private BeaconManager beaconManager;
-	private static final Region ALL_BEACONS_REGION = new Region("apr", null,
-			null, null);
+	private static Region mBEACONS_REGION = new Region(
+			"", null, null, null);
 	private static NotificationManager mNotificationManager;
 
 	@Override
@@ -47,17 +47,29 @@ public class NotifyService extends Service {
 	private void startMonitoring() {
 		// If cannot scanned past scanned device in this period, device is leave.
 		beaconManager.setMonitoringExpirationMill(5L);
-		// beaconManager.setRangingExpirationMill(5L);
+		beaconManager.setRangingExpirationMill(5L);
 	    // beaconManager.setBackgroundScanPeriod(10L, 1);
 	    // beaconManager.setForegroundScanPeriod(10L, 1);
 		beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
 			@Override
 			public void onServiceReady() {
 				try {
-					beaconManager.startMonitoring(ALL_BEACONS_REGION);
-					beaconManager.startRanging(ALL_BEACONS_REGION);
+					if(BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, getApplicationContext()).equals("")) {
+						beaconManager.startMonitoring(mBEACONS_REGION);
+						beaconManager.startRanging(mBEACONS_REGION);
+					} else {
+						String name = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_BEACON_NAME, getApplicationContext());
+						String uuid = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_UUID, getApplicationContext());
+						int major = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MAJOT, getApplicationContext());
+						int minor = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MINOR, getApplicationContext());
+						beaconManager.stopRanging(mBEACONS_REGION);
+						beaconManager.stopMonitoring(mBEACONS_REGION);
+						mBEACONS_REGION = new Region(name, uuid, major, minor);
+						beaconManager.startMonitoring(mBEACONS_REGION);
+						beaconManager.startRanging(mBEACONS_REGION);
+					}
 				} catch (RemoteException e) {
-
+					Log.i(TAG, "onServiceReady exception: " + e.toString() );
 				}
 			}
 		});
@@ -90,14 +102,10 @@ public class NotifyService extends Service {
 
 			@Override
 			public void onExitedRegion(Region region) {
-//				String selected_uuid_major_minor = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_UUID, getApplicationContext()) +
-//						BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_MAJOT, getApplicationContext()) +
-//						BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_MINOR, getApplicationContext());
-//				String current_uuid_major_minor = region.getProximityUUID() + region.getMajor() + region.getMinor();
-//				Log.i(TAG, "onExitedRegion selected_uuid_major_minor: " + selected_uuid_major_minor + ", current_uuid_major_minor: " + current_uuid_major_minor);
-//				if (selected_uuid_major_minor.equals(current_uuid_major_minor)) {
-//					Log.i(TAG, "onExitedRegion checked");
-				if(!BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, getApplicationContext()).equals("")) {
+				Log.i(TAG, "onExitedRegion");
+				String mac = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, getApplicationContext());
+				if(!mac.equals("")) {
+					Log.i(TAG, "onExitedRegion mac: " + mac);
 					showNotification(getApplicationContext(),
 							getResources().getString(R.string.device_not_found));
 				}
@@ -140,46 +148,6 @@ public class NotifyService extends Service {
 //	}
 
 	public static void showNotification(Context context, String message) {
-		Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-		Resources r = context.getResources();
-
-		// Setup fullscreen intent
-		Intent fullScreenIntent = new Intent(context, MainBeaconListActivity.class);
-		fullScreenIntent.putExtra("NotifyMessage", NotifyConstants.NOTIFICATION_BEACONLIST);
-		PendingIntent pIntent = PendingIntent.getActivity(context, 0, fullScreenIntent,
-				PendingIntent.FLAG_UPDATE_CURRENT);
-
-		NotificationManager nManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-		NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
-				.setContentTitle(context.getString(R.string.app_name))
-				.setContentText(message)
-				.setSmallIcon(R.drawable.search)
-				.setOngoing(true)
-				.setAutoCancel(true)
-				.setSound(alarmSound)
-				.setCategory(NotificationCompat.CATEGORY_ALARM)
-				.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-				.setContentIntent(pIntent)
-				.setLocalOnly(true);
-
-		Intent dismissReceive = new Intent();
-		dismissReceive.setAction(NotifyConstants.ACTION_DISMISS_NOTIFICATION);
-		PendingIntent pendingIntentDismiss = PendingIntent.getBroadcast(context, NotifyConstants.BABY_MISSING_NOTIFICATION_ID, dismissReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-		notification.addAction(0, r.getString(R.string.notification_dismiss), pendingIntentDismiss);
-
-		fullScreenIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-				Intent.FLAG_ACTIVITY_NO_USER_ACTION);
-		notification.setFullScreenIntent(PendingIntent.getActivity(context,
-				NotifyConstants.BABY_MISSING_NOTIFICATION_ID, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT), true);
-		notification.setPriority(NotificationCompat.PRIORITY_MAX);
-
-		Notification mNotification = notification.build();
-
-		mNotification.flags |= Notification.FLAG_INSISTENT;
-		nManager.notify(NotifyConstants.BABY_MISSING_NOTIFICATION_ID, mNotification);
-	}
-
-	public static void showNotificationII(Context context, String message) {
 		Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 		Resources r = context.getResources();
 

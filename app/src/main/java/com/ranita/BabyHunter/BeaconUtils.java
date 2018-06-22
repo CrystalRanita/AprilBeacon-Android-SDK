@@ -12,6 +12,7 @@ import android.util.Log;
 public class BeaconUtils {
     private static final String TAG = "BeaconList";
     public static final String SELECTED_MAC = "SELECTED_MAC";
+    public static final String SELECTED_BEACON_NAME = "SELECTED_BEACON_NAME";
     public static final String SELECTED_USER_NAME = "SELECTED_USER_NAME";
     public static final String SELECTED_USER_UUID = "SELECTED_USER_UUID";
     public static final String SELECTED_USER_MAJOT = "SELECTED_USER_MAJOT";
