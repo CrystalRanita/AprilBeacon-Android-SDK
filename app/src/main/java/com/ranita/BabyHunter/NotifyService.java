@@ -53,24 +53,50 @@ public class NotifyService extends Service {
 		beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
 			@Override
 			public void onServiceReady() {
+			Log.i(TAG, "beaconManager.connect");
+			if(BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, getApplicationContext()).equals("")) {
 				try {
-					if(BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, getApplicationContext()).equals("")) {
-						beaconManager.startMonitoring(mBEACONS_REGION);
-						beaconManager.startRanging(mBEACONS_REGION);
-					} else {
-						String name = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_BEACON_NAME, getApplicationContext());
-						String uuid = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_UUID, getApplicationContext());
-						int major = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MAJOT, getApplicationContext());
-						int minor = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MINOR, getApplicationContext());
-						beaconManager.stopRanging(mBEACONS_REGION);
-						beaconManager.stopMonitoring(mBEACONS_REGION);
-						mBEACONS_REGION = new Region(name, uuid, major, minor);
-						beaconManager.startMonitoring(mBEACONS_REGION);
-						beaconManager.startRanging(mBEACONS_REGION);
-					}
+					beaconManager.startMonitoring(mBEACONS_REGION);
 				} catch (RemoteException e) {
-					Log.i(TAG, "onServiceReady exception: " + e.toString() );
+					e.printStackTrace();
 				}
+				try {
+					beaconManager.startRanging(mBEACONS_REGION);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+			} else {
+				String name = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_BEACON_NAME, getApplicationContext());
+				String uuid = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_UUID, getApplicationContext());
+				int major = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MAJOT, getApplicationContext());
+				int minor = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MINOR, getApplicationContext());
+				try {
+					beaconManager.stopRanging(new Region("", null, null, null));
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				try {
+					beaconManager.stopMonitoring(new Region("", null, null, null));
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				mBEACONS_REGION = new Region(name, uuid, major, minor);
+				try {
+					beaconManager.startMonitoring(mBEACONS_REGION);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				try {
+					beaconManager.startRanging(mBEACONS_REGION);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+			}
 			}
 		});
 		beaconManager.setRangingListener(new BeaconManager.RangingListener() {
@@ -104,12 +130,9 @@ public class NotifyService extends Service {
 			public void onExitedRegion(Region region) {
 				Log.i(TAG, "onExitedRegion");
 				String mac = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, getApplicationContext());
-				if(!mac.equals("")) {
-					Log.i(TAG, "onExitedRegion mac: " + mac);
-					showNotification(getApplicationContext(),
-							getResources().getString(R.string.device_not_found));
-				}
-//				}
+				Log.i(TAG, "onExitedRegion mac: " + mac);
+				showNotification(getApplicationContext(),
+					getResources().getString(R.string.device_not_found));
 			}
 
 			@Override
@@ -148,6 +171,7 @@ public class NotifyService extends Service {
 //	}
 
 	public static void showNotification(Context context, String message) {
+		Log.i(TAG, "showNotification");
 		Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 		Resources r = context.getResources();
 
@@ -189,6 +213,7 @@ public class NotifyService extends Service {
 	}
 
 	public static void deleteNotification(Context context) {
+		Log.i(TAG, "deleteNotification");
 		NotificationManager nManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 		nManager.cancel(NotifyConstants.BABY_MISSING_NOTIFICATION_ID);
 	}

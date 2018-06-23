@@ -40,7 +40,7 @@ import java.util.List;
 
 public class MainBeaconListActivity extends Activity {
     private static final int REQUEST_ENABLE_BT = 1234;
-    private static final String TAG = "BeaconList";
+    private static final String TAG = "MainBeaconListActivity";
     private static Region mBEACONS_REGION = new Region(
             "", null, null, null);
     private BeaconAdapter adapter;
@@ -278,24 +278,43 @@ public class MainBeaconListActivity extends Activity {
     }
 
     private void resetTrackBeaconPref() {
-        try {
-            if(!BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, MainBeaconListActivity.this).equals("")) {
-                Log.i(TAG, "resetTrackBeaconPref");
-                String name = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_BEACON_NAME, MainBeaconListActivity.this);
-                String uuid = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_UUID, MainBeaconListActivity.this);
-                int major = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MAJOT, MainBeaconListActivity.this);
-                int minor = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MINOR, MainBeaconListActivity.this);
-                Log.i(TAG, "resetTrackBeaconPref name: " + name);
-                mBEACONS_REGION = new Region(name, uuid, major, minor);
+        Log.i(TAG, "resetTrackBeaconPref");
+        if(!BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, MainBeaconListActivity.this).equals("")) {
+            Log.i(TAG, "resetTrackBeaconPref start reset region");
+            String name = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_BEACON_NAME, MainBeaconListActivity.this);
+            String uuid = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_UUID, MainBeaconListActivity.this);
+            int major = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MAJOT, MainBeaconListActivity.this);
+            int minor = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MINOR, MainBeaconListActivity.this);
+            Log.i(TAG, "resetTrackBeaconPref name: " + name);
+            mBEACONS_REGION = new Region(name, uuid, major, minor);
+            try {
                 beaconManager.stopRanging(mBEACONS_REGION);
-                beaconManager.stopMonitoring(mBEACONS_REGION);
-                mBEACONS_REGION = new Region("", null, null, null);
-                beaconManager.startRanging(mBEACONS_REGION);
-                beaconManager.startMonitoring(mBEACONS_REGION);
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
+            try {
+                beaconManager.stopMonitoring(mBEACONS_REGION);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mBEACONS_REGION = new Region("", null, null, null);
+            try {
+                beaconManager.startRanging(mBEACONS_REGION);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            try {
+                beaconManager.startMonitoring(mBEACONS_REGION);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
+        Log.i(TAG, "resetTrackBeaconPref start reset pref");
         BeaconUtils.setSharedPref(BeaconUtils.SELECTED_MAC, "", getApplicationContext());
         BeaconUtils.setSharedPref(BeaconUtils.SELECTED_BEACON_NAME, "", getApplicationContext());
         BeaconUtils.setSharedPref(BeaconUtils.SELECTED_USER_NAME, "", getApplicationContext());
@@ -310,6 +329,7 @@ public class MainBeaconListActivity extends Activity {
 
 
     private void init() {
+        Log.i(TAG, "init");
         myBeacons = new ArrayList<Beacon>();
         ListView lv = (ListView) findViewById(R.id.lv);
         adapter = new BeaconAdapter(this);
@@ -366,6 +386,7 @@ public class MainBeaconListActivity extends Activity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
                 mScanTextView.setText(getResources().getString(R.string.scanning_target));
+                adapter.replaceWith(Collections.<Beacon>emptyList());
                 mSelectedBeaconPosition = arg2;
                 final Thread thread=new Thread(new Runnable()
                 {
@@ -374,9 +395,16 @@ public class MainBeaconListActivity extends Activity {
                     {
                         Log.i(TAG, "setOnItemClickListener set device, position: " + mSelectedBeaconPosition);
                         Beacon beacon = myBeacons.get(mSelectedBeaconPosition);
+                        stopService(new Intent(MainBeaconListActivity.this, NotifyService.class));
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         writeSelectedBeaconData(beacon, getApplicationContext());
                         Intent intent = new Intent(MainBeaconListActivity.this, NotifyService.class);
                         startService(intent);
+                        startTargetRegion();
                     }
                 });
                 thread.start();
@@ -419,6 +447,53 @@ public class MainBeaconListActivity extends Activity {
         BeaconUtils.setBoolenSharedPref(BeaconUtils.SELECTED_DISTANCE_DETECT_ENABLED, false, ctx);
     }
 
+    private void startAllRegion() {
+        Log.i(TAG, "onServiceReady start all");
+        try {
+            beaconManager.startMonitoring(new Region("", null, null, null));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            beaconManager.startRanging(new Region("", null, null, null));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startTargetRegion() {
+        Log.i(TAG, "onServiceReady start selected");
+        String name = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_BEACON_NAME, MainBeaconListActivity.this);
+        String uuid = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_UUID, MainBeaconListActivity.this);
+        int major = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MAJOT, MainBeaconListActivity.this);
+        int minor = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MINOR, MainBeaconListActivity.this);
+        try {
+            beaconManager.stopRanging(new Region("", null, null, null));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            beaconManager.stopMonitoring(new Region("", null, null, null));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        mBEACONS_REGION = new Region(name, uuid, major, minor);
+        try {
+            beaconManager.startMonitoring(mBEACONS_REGION);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+            beaconManager.startRanging(mBEACONS_REGION);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * beacon connect service start scan beacons
      */
@@ -428,25 +503,10 @@ public class MainBeaconListActivity extends Activity {
         beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
-            try {
-                if(BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, MainBeaconListActivity.this).equals("")) {
-                    Log.i(TAG, "onServiceReady start all");
-                    beaconManager.startMonitoring(mBEACONS_REGION);
-                    beaconManager.startRanging(mBEACONS_REGION);
-                } else {
-                    Log.i(TAG, "onServiceReady start selected");
-                    String name = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_BEACON_NAME, MainBeaconListActivity.this);
-                    String uuid = BeaconUtils.getSharedPref(BeaconUtils.SELECTED_USER_UUID, MainBeaconListActivity.this);
-                    int major = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MAJOT, MainBeaconListActivity.this);
-                    int minor = BeaconUtils.getIntSharedPref(BeaconUtils.SELECTED_USER_MINOR, MainBeaconListActivity.this);
-                    beaconManager.stopRanging(mBEACONS_REGION);
-                    beaconManager.stopMonitoring(mBEACONS_REGION);
-                    mBEACONS_REGION = new Region(name, uuid, major, minor);
-                    beaconManager.startMonitoring(mBEACONS_REGION);
-                    beaconManager.startRanging(mBEACONS_REGION);
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
+            if(BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, MainBeaconListActivity.this).equals("")) {
+                startAllRegion();
+            } else {
+                startTargetRegion();
             }
             }
         });
@@ -454,6 +514,7 @@ public class MainBeaconListActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "onActivityResult");
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
                 connectToService();
