@@ -9,6 +9,6 @@
     <!-- FontSize -->
     <dimen name="scanning_fontsize">36dp</dimen>
     <dimen name="scanning_listview_fontsize">16dp</dimen>
-    <dimen name="user_guide_fontsize">18dp</dimen>
+    <dimen name="user_guide_fontsize">14dp</dimen>
     <dimen name="list_fontsize">28dp</dimen>
 </resources>

@@ -244,10 +244,11 @@ public class MainBeaconListActivity extends Activity {
         txtView.setBackgroundResource(R.drawable.family_bg);
         String guide_str = getResources().getString(R.string.guide) + ":\n" +
                 getResources().getString(R.string.user_guide1) + "\n" +
-                getResources().getString(R.string.user_guide2) + "\n" +
+                getResources().getString(R.string.user_guide2) + "\n\n" +
                 getResources().getString(R.string.user_guide3) + "\n" +
-                getResources().getString(R.string.user_guide4) + "\n" +
-                getResources().getString(R.string.user_guide5);
+                getResources().getString(R.string.user_guide4) + "\n\n" +
+                getResources().getString(R.string.user_guide5) + "\n" +
+                getResources().getString(R.string.user_guide6);
         txtView.setText(guide_str);
         builder.setNegativeButton(R.string.ok, null);
         AlertDialog dialog = builder.create();

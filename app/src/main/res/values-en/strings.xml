@@ -41,7 +41,8 @@
     <string name="user_guide2">Notification appears when baby away from you.</string>
     <string name="user_guide3">Reference：AprilBeacon-Android-SDK</string>
     <string name="user_guide4">Icon made by Freepik from www.flaticon.com</string>
-    <string name="user_guide5">Team：Lì-Tíng, Doris, Crystal</string>
+    <string name="user_guide5">Advisor: Chiu-Ching Tuan</string>
+    <string name="user_guide6">Team: Lì-Tíng, Doris, Crystal</string>
     <string name="notification_dismiss">Dismiss</string>
     <string name="dist">Distance</string>
     <string name="give_me_a_name">Somebody</string>

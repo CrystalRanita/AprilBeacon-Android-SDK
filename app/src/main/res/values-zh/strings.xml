@@ -41,7 +41,8 @@
     <string name="user_guide2">當寶貝遠離您時會發出提醒。</string>
     <string name="user_guide3">參考資料：AprilBeacon-Android-SDK</string>
     <string name="user_guide4">圖片修改自 www.flaticon.com 的 Freepik</string>
-    <string name="user_guide5">製作團隊：苙婷、美辰、昭華</string>
+    <string name="user_guide5">指導教授: 段裘慶 教授</string>
+    <string name="user_guide6">製作團隊：苙婷、美辰、昭華</string>
     <string name="notification_dismiss">關閉</string>
     <string name="dist">距離</string>
     <string name="give_me_a_name">路人甲</string>
