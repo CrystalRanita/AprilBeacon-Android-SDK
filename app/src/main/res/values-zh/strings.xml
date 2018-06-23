@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">寶寶追蹤</string>
+    <string name="app_name">寶貝獵人</string>
     <string name="start_scan">開始掃描</string>
     <string name="stop_scan">停止掃描</string>
     <string name="scanning">掃描中......</string>
