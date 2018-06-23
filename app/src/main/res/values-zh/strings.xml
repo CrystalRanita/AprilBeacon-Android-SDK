@@ -48,4 +48,5 @@
     <string name="give_me_a_name">路人甲</string>
     <string name="beacon_id">編號</string>
     <string name="guide">說明</string>
+    <string name="qrcode">應用程式條碼</string>
 </resources>

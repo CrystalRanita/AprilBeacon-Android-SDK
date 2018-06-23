@@ -48,4 +48,5 @@
     <string name="give_me_a_name">Somebody</string>
     <string name="beacon_id">ID</string>
     <string name="guide">Guide</string>
+    <string name="qrcode">App QR Code</string>
 </resources>

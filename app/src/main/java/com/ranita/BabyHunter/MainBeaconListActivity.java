@@ -95,6 +95,9 @@ public class MainBeaconListActivity extends Activity {
             case R.id.action_settings:
                 displayUserGuideDialog();
                 return true;
+            case R.id.action_qrcode:
+                displayQrCodeDialog();
+                return true;
 //            case R.id.action_txPower_settings:
 //                displayTxPowerDialog();
 //                return true;
@@ -250,6 +253,16 @@ public class MainBeaconListActivity extends Activity {
                 getResources().getString(R.string.user_guide5) + "\n" +
                 getResources().getString(R.string.user_guide6);
         txtView.setText(guide_str);
+        builder.setNegativeButton(R.string.ok, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void displayQrCodeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainBeaconListActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View view = inflater.inflate(R.layout.dialog_qrcode, null);
+        builder.setView(view);
         builder.setNegativeButton(R.string.ok, null);
         AlertDialog dialog = builder.create();
         dialog.show();
