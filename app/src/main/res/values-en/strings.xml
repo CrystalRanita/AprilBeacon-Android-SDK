@@ -4,6 +4,7 @@
     <string name="start_scan">Start Scan</string>
     <string name="stop_scan">Stop Scan</string>
     <string name="scanning">Scanning...</string>
+    <string name="scanning_target">Scanning target...</string>
     <string name="bt_not_enabled">Bluetooth not enabled.</string>
     <string name="location_not_enabled">Location setting not enabled.</string>
     <string name="device_found_num">Found Devices</string>

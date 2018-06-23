@@ -19,6 +19,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -50,11 +51,19 @@ public class MainBeaconListActivity extends Activity {
     private static int mPower = -51;
     private static int mPowerID = 0;
     private static int mSelectedBeaconPosition;
+    private TextView mScanTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_main);
+         mScanTextView = (TextView) findViewById(R.id.tv_scanning);
+        if(BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, MainBeaconListActivity.this).equals("")) {
+            mScanTextView.setText(getResources().getString(R.string.scanning));
+        } else {
+            mScanTextView.setText(getResources().getString(R.string.scanning_target));
+        }
         init();
     }
 
@@ -296,6 +305,7 @@ public class MainBeaconListActivity extends Activity {
         BeaconUtils.setBoolenSharedPref(BeaconUtils.SELECTED_BEACON_NOTIFICATION_ENABLED, false, getApplicationContext());
         BeaconUtils.setBoolenSharedPref(BeaconUtils.SELECTED_DISTANCE_DETECT_ENABLED, false, getApplicationContext());
         Toast.makeText(MainBeaconListActivity.this, getResources().getString(R.string.data_clean), Toast.LENGTH_SHORT).show();
+        mScanTextView.setText(getResources().getString(R.string.scanning));
     }
 
 
@@ -355,6 +365,7 @@ public class MainBeaconListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
+                mScanTextView.setText(getResources().getString(R.string.scanning_target));
                 mSelectedBeaconPosition = arg2;
                 final Thread thread=new Thread(new Runnable()
                 {
@@ -413,7 +424,6 @@ public class MainBeaconListActivity extends Activity {
      */
     private void connectToService() {
         Log.i(TAG, "connectToService");
-        getActionBar().setSubtitle(getResources().getString(R.string.scanning));
         adapter.replaceWith(Collections.<Beacon>emptyList());
         beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
@@ -498,6 +508,12 @@ public class MainBeaconListActivity extends Activity {
             Intent enableBtIntent = new Intent(
                     BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+
+        if(BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, MainBeaconListActivity.this).equals("")) {
+            mScanTextView.setText(getResources().getString(R.string.scanning));
+        } else {
+            mScanTextView.setText(getResources().getString(R.string.scanning_target));
         }
         Log.i(TAG, "Enable baby notify");
         Intent intent = new Intent(MainBeaconListActivity.this, NotifyService.class);

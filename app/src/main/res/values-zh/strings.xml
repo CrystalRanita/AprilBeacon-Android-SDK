@@ -4,6 +4,7 @@
     <string name="start_scan">開始掃描</string>
     <string name="stop_scan">停止掃描</string>
     <string name="scanning">掃描中......</string>
+    <string name="scanning_target">掃描目標中......</string>
     <string name="bt_not_enabled">尚未開啟藍芽</string>
     <string name="location_not_enabled">尚未開啟位置設定</string>
     <string name="device_found_num">已找到的裝置數量</string>
