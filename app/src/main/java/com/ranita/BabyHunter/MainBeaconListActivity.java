@@ -127,19 +127,19 @@ public class MainBeaconListActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        mTargetDistance = 8;
+                        mTargetDistance = 4;
                         mTargetDistanceID = 0;
                         break;
                     case 1:
-                        mTargetDistance = 12;
+                        mTargetDistance = 6;
                         mTargetDistanceID = 1;
                         break;
                     case 2:
-                        mTargetDistance = 16;
+                        mTargetDistance = 9;
                         mTargetDistanceID = 2;
                         break;
                     default:
-                        mTargetDistance = 8;
+                        mTargetDistance = 3;
                         mTargetDistanceID = 0;
                 }
             }
