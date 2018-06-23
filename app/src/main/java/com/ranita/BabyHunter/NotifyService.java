@@ -164,6 +164,7 @@ public class NotifyService extends Service {
 				.setSmallIcon(R.drawable.search)
 				.setOngoing(true)
 				.setAutoCancel(true)
+				.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
 				.setSound(alarmSound)
 				.setCategory(NotificationCompat.CATEGORY_ALARM)
 				.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
