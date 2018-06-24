@@ -240,7 +240,7 @@ public class MainBeaconListActivity extends Activity {
                 getResources().getString(R.string.dist_item3),
         };
 
-        int checkedItemID = BeaconUtils.getIntSharedPref(BeaconUtils.TARGET_NOTIFY_DISTANCE_ID, getApplicationContext());
+        int checkedItemID = BeaconUtils.getIntDistIDSharedPref(BeaconUtils.TARGET_NOTIFY_DISTANCE_ID, getApplicationContext());
         builder.setSingleChoiceItems(dist_items, checkedItemID, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -254,11 +254,11 @@ public class MainBeaconListActivity extends Activity {
                         mTargetDistanceID = 1;
                         break;
                     case 2:
-                        mTargetDistance = 9;
+                        mTargetDistance = 8;
                         mTargetDistanceID = 2;
                         break;
                     default:
-                        mTargetDistance = 3;
+                        mTargetDistance = 8;
                         mTargetDistanceID = 0;
                 }
             }

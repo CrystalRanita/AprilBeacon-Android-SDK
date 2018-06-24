@@ -49,6 +49,11 @@ public class BeaconUtils {
         return mSharedPref.getInt(key, 8);
     }
 
+    public static int getIntDistIDSharedPref(String key, Context ctx){
+        SharedPreferences mSharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return mSharedPref.getInt(key, 2);
+    }
+
     public static void setSharedPref(String key, String value, Context ctx){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
         SharedPreferences.Editor editor = sharedPref.edit();
