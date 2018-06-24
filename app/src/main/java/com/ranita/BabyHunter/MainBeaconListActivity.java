@@ -1,26 +1,29 @@
 package com.ranita.BabyHunter;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +42,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class MainBeaconListActivity extends Activity {
-    private static final int REQUEST_ENABLE_BT = 1234;
+    private static final int REQ_ENABLE_BT = 10001;
+    private static final int REQ_ENABLE_LOCATION = 10002;
+    private static final int REQ_PERMISSION_LOCATION = 10003;
     private static final String TAG = "MainBeaconListActivity";
     private static Region mBEACONS_REGION = new Region(
             "", null, null, null);
@@ -52,6 +57,7 @@ public class MainBeaconListActivity extends Activity {
     private static int mPowerID = 0;
     private static int mSelectedBeaconPosition;
     private TextView mScanTextView;
+    private LocationManager mLocationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +70,111 @@ public class MainBeaconListActivity extends Activity {
         } else {
             mScanTextView.setText(getResources().getString(R.string.scanning_target));
         }
+        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         init();
+    }
+
+    public boolean chkBleEnabled() {
+        if (!beaconManager.isBluetoothEnabled()) {
+            Log.i(TAG, "!isBluetoothEnabled");
+            Intent enableBtIntent = new Intent(
+                    BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQ_ENABLE_BT);
+            return true;
+        }
+        return false;
+    }
+
+    public void chkGpsEnabled() {
+        if(android.os.Build.VERSION.SDK_INT < 23) {
+            Log.i(TAG, "chkGpsEnabled < 23 does not need to enable location.");
+            return;
+        }
+        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getString(R.string.location_not_enabled))
+                    .setCancelable(false)
+                    .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            finish();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
+
+    public boolean chkLocationPermission() {
+        if(android.os.Build.VERSION.SDK_INT < 23) {
+            Log.i(TAG, "chkLocationPermission < 23 does not need to enable location.");
+            return true;
+        }
+        if (ContextCompat.checkSelfPermission(MainBeaconListActivity.this,
+            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "chkLocationPermission request location permission");
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainBeaconListActivity.this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                Log.i(TAG, "chkLocationPermission shouldShowRequestPermissionRationale");
+                new AlertDialog.Builder(MainBeaconListActivity.this)
+                    .setTitle(R.string.location_permission)
+                    .setMessage(R.string.location_not_enabled)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.requestPermissions(MainBeaconListActivity.this,
+                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                            REQ_PERMISSION_LOCATION);
+                        }
+                    })
+                    .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                            // Intent exitIntent = new Intent(Intent.ACTION_MAIN);
+                            // exitIntent.addCategory( Intent.CATEGORY_HOME );
+                            // exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            // startActivity(exitIntent);
+                        }
+                    })
+                    .create()
+                    .show();
+            } else {
+                Log.i(TAG, "chkLocationPermission requestPermissions");
+                ActivityCompat.requestPermissions(MainBeaconListActivity.this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        REQ_PERMISSION_LOCATION);
+            }
+            return false;
+        } else {
+            Log.i(TAG, "chkLocationPermission enabled");
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQ_PERMISSION_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // OK
+                } else {
+                    // permission denied, exit app.
+                    finish();
+//                    Intent exitIntent = new Intent(Intent.ACTION_MAIN);
+//                    exitIntent.addCategory( Intent.CATEGORY_HOME );
+//                    exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(exitIntent);
+                }
+                return;
+            }
+        }
     }
 
     @Override
@@ -515,13 +625,29 @@ public class MainBeaconListActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "onActivityResult");
-        if (requestCode == REQUEST_ENABLE_BT) {
+        if (requestCode == REQ_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
                 connectToService();
             } else {
                 Toast.makeText(this, getResources().getString(R.string.bt_not_enabled), Toast.LENGTH_LONG)
                         .show();
                 getActionBar().setSubtitle(getResources().getString(R.string.bt_not_enabled));
+                Intent exitIntent = new Intent(Intent.ACTION_MAIN);
+                exitIntent.addCategory( Intent.CATEGORY_HOME );
+                exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(exitIntent);
+            }
+        } else if (requestCode == REQ_ENABLE_LOCATION) {
+            if (resultCode == Activity.RESULT_OK) {
+                connectToService();
+            } else {
+                Toast.makeText(this, getResources().getString(R.string.location_not_enabled), Toast.LENGTH_LONG)
+                        .show();
+                getActionBar().setSubtitle(getResources().getString(R.string.location_not_enabled));
+                Intent exitIntent = new Intent(Intent.ACTION_MAIN);
+                exitIntent.addCategory( Intent.CATEGORY_HOME );
+                exitIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(exitIntent);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -564,13 +690,10 @@ public class MainBeaconListActivity extends Activity {
             Log.i(TAG, "!hasBluetooth");
             return;
         }
-        if (!beaconManager.isBluetoothEnabled()) {
-            Log.i(TAG, "!isBluetoothEnabled");
-            Intent enableBtIntent = new Intent(
-                    BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
 
+        chkBleEnabled();
+        chkGpsEnabled();
+        chkLocationPermission();
         if(BeaconUtils.getSharedPref(BeaconUtils.SELECTED_MAC, MainBeaconListActivity.this).equals("")) {
             mScanTextView.setText(getResources().getString(R.string.scanning));
         } else {

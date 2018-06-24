@@ -6,7 +6,8 @@
     <string name="scanning">Scanning...</string>
     <string name="scanning_target">Scanning target...</string>
     <string name="bt_not_enabled">Bluetooth not enabled.</string>
-    <string name="location_not_enabled">Location setting not enabled.</string>
+    <string name="location_permission">Location Permission</string>
+    <string name="location_not_enabled">GPS setting not enabled. Please agree enable setting.</string>
     <string name="device_found_num">Found Devices</string>
     <string name="device_away">Warning baby away from you!</string>
     <string name="device_coming">Baby coming!</string>

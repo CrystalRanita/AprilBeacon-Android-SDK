@@ -6,7 +6,8 @@
     <string name="scanning">掃描中......</string>
     <string name="scanning_target">掃描目標中......</string>
     <string name="bt_not_enabled">尚未開啟藍芽</string>
-    <string name="location_not_enabled">尚未開啟位置設定</string>
+    <string name="location_permission">開啟位置授權</string>
+    <string name="location_not_enabled">請開啟定位功能，才能進行裝置偵測。</string>
     <string name="device_found_num">已找到的裝置數量</string>
     <string name="device_away">注意！寶寶已遠離！</string>
     <string name="device_coming">寶寶進入範圍內!</string>
