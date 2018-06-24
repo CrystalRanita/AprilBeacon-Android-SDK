@@ -9,8 +9,8 @@ android {
         applicationId 'com.ranita.BabyHunterII'
         minSdkVersion 21
         targetSdkVersion 22
-        versionCode 100006
-        versionName "1.000.06"
+        versionCode 100007
+        versionName "1.000.07"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
