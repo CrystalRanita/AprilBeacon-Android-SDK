@@ -6,11 +6,11 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId 'com.ranita.BabyHunter'
+        applicationId 'com.ranita.BabyHunterII'
         minSdkVersion 21
         targetSdkVersion 22
-        versionCode 100005
-        versionName "1.000.05"
+        versionCode 100002
+        versionName "1.000.02"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
